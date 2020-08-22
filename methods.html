@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" href="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.css"/>
+    <script type="text/javascript" src="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.js"></script>
+</head>
+<body>
+<div id="grid"></div>
+<button id="undo">undo</button>
+<button id="redo">redo</button>
+
+<script type="text/javascript">
+    var grid = document.getElementById('grid');
+
+    var src = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ];
+
+    var table = new Handsontable(grid, {
+        data: src,
+        undo: true,
+    });
+
+    // 行・列を挿入・削除する
+    table.alter('insert_row', 1, 3);
+    table.alter('insert_col', 2, 3);
+
+    // グリッドをクリアする
+    // table.clear();
+
+    // 列・行数を取得する
+    var cols = table.countCols();
+    var rows = table.countRows();
+    console.log('cols=' + cols + ', rows=' + rows);
+
+    // セルの選択状態を解除する
+    setTimeout(function() {
+        table.deselectCell();
+    }, 2000);
+
+    // データをまるごと、または範囲指定して取得する
+    console.table(table.getData());
+    // console.table(table.getData(0, 1, 1, 2));
+
+    // ソースデータをそのまま取得する
+    console.table(table.getSourceData());
+
+    // getData() と getSourceData() の違いは、ソースデータそのものを取得している点。
+    console.table(table.getSourceData() === src); // true
+    console.table(table.getData() === src); // false
+
+    // アンドゥ・リドゥ
+    document.querySelector('#undo').addEventListener('click', function() {
+        table.undo();
+    });
+    document.querySelector('#redo').addEventListener('click', function() {
+        table.redo();
+    });
+</script>
+
+</body>
+</html>
