@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" href="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.css"/>
+    <script type="text/javascript" src="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.js"></script>
+</head>
+<body>
+<div id="grid"></div>
+<script type="text/javascript">
+    var grid = document.getElementById('grid');
+
+    new Handsontable(grid, {
+        // カラムのオプション指定は、 columns に配列を渡し、列番号に対応する要素にオブジェクトを渡すことで設定する。
+        columns: [
+            {
+                type: 'text'
+            },
+            {
+                type: 'numeric'
+            },
+            {
+                type: 'checkbox',
+                label: {
+                    value: 'チェックボックスやで'
+                }
+            },
+            {
+                type: 'autocomplete',
+                source: ['one', 'two', 'three', 'four', 'five'],
+                strict: true, // 入力できる値を制限する
+                allowInvalid: false, // 入力できる値を完全に制限する
+                filter: false, // 候補を絞りこまないようにする
+            },
+            {
+                type: 'password'
+            },
+            {
+                type: 'date',
+                defaultDate: '01/01/2016',
+            },
+            {
+                readOnly: true
+            },
+            {
+                validator: /^[a-z]+$/
+            },
+            {
+                editor: 'select',
+                selectOptions: ['hoge', 'fuga', 'piyo']
+            },
+            {
+                className: 'style' // クラスを付与できる
+            },
+        ]
+    });
+
+</script>
+<style type="text/css">
+    .style{
+        color: blue;
+    }
+</style>
+</body>
+</html>
