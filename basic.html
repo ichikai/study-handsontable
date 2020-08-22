@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" href="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.css"/>
+    <script type="text/javascript" src="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.js"></script>
+</head>
+<body>
+<div id="grid1"></div>
+<br><br>
+<div id="grid2"></div>
+<br><br>
+<div id="grid3"></div>
+<br><br>
+
+<script type="text/javascript">
+    // 配列
+    var data1 = [
+        ['佐藤', 28],
+        ['鈴木', 19],
+        ['田中', 25]
+    ];
+    var grid1 = document.getElementById('grid1');
+    new Handsontable(grid1, {data: data1});
+
+    // オブジェクト
+    var data2 = [
+        {name: '佐藤', age: 25, a: 'A'},
+        {name: '鈴木', age: 11, b: 'B'},
+        {name: '田中', age: 21}
+    ];
+    var grid2 = document.getElementById('grid2');
+    new Handsontable(grid2, {data: data2});
+
+    // ネストされたオブジェクト
+    var data3 = [
+        {name: {first: '佐藤', last: '一郎'}, age: 25},
+        {name: {first: '鈴木', last: '二郎'}, age: 11},
+        {name: {first: '田中', last: '三郎'}, age: 21}
+    ];
+    var grid3 = document.getElementById('grid3');
+    new Handsontable(grid3, {
+        data: data3,
+        columns: [ // ★列のマッピングを定義できる
+            {data: 'age'},
+            {data: 'name.last'}, // ★ネストされたオブジェクトのどのプロパティを表示するかを指定できる
+            {data: 'name.first'}
+        ]
+    });
+</script>
+
+</body>
+</html>
