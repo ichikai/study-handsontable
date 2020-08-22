@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" href="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.css"/>
+    <script type="text/javascript" src="https://js.cybozu.com/handsontable/6.2.2/handsontable.full.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<button id="undo">戻る</button>
+<button id="redo">進む</button>
+
+<div id="questionnaire"></div>
+
+<script type="text/javascript">
+    var header = ['Q No', 'Question sentence／option', 'Q type', 'Condition', 'Error condition', 'Note'];
+
+
+    function questionHeaderRowRenderer(instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+        var data = instance.getData();
+        if (data[row][2]) {
+            td.className = 'question-header';
+        }
+    }
+
+    var questionnaire = document.getElementById('questionnaire');
+    var table = new Handsontable(questionnaire, {
+        data: [
+            ['SC1', 'あなたの性別をお知らせください。', 'SA', 'ALL', '', ''],
+            ['1', '男性', '', '', '', ''],
+            ['2', '女性', '', '', '', ''],
+            ['SC2', 'あなたは日本産のお米にどのようなイメージがありますか。', 'MA', 'ALL', '', ''],
+            ['Caption', '＜粒について＞', '', '', '', ''],
+            ['1', '粒が大きい', '', '', '', ''],
+            ['2', '粒が小さい', '', '', '', ''],
+            ['Caption', '＜形について＞', '', '', '', ''],
+            ['3', '細長い', '', '', '', ''],
+            ['4', '丸い', '', '', '', ''],
+            ['5', 'わからない', '', '', '', ''],
+            ['6', 'あてはまるものはない', '', '', '', ''],
+        ],
+        autoColumnSize: true, // 初期表示時のカラム幅を自動調整する。デフォルトtrueのよう
+        colHeaders: header,
+        minSpareRows: 1, // 余白となる行の最小値を設定する
+        columns: [
+            {
+                type: 'text'
+            },
+            {
+                type: 'text'
+            },
+            {
+                editor: 'select',
+                selectOptions: ['SA', 'MA', 'FA']
+            },
+            {
+                type: 'text'
+            },
+            {
+                type: 'text'
+            },
+        ],
+
+        cells: function(row, col, prop) {
+            var cellProperties = {};
+            var data = this.instance.getData();
+
+            cellProperties.renderer = questionHeaderRowRenderer;
+
+            return cellProperties;
+        },
+    });
+
+    // アンドゥ・リドゥ
+    document.querySelector('#undo').addEventListener('click', function() {
+        table.undo();
+    });
+    document.querySelector('#redo').addEventListener('click', function() {
+        table.redo();
+    });
+
+</script>
+<style type="text/css">
+    /*.ht_master tr:nth-child(4) > td {*/
+    /*    background-color: #99FFFF;*/
+    /*}*/
+    .handsontable th,
+    .handsontable td {
+        padding: 2px 10px 2px 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .handsontable td.question-header {
+        font-weight: bold;
+        color: green;
+        background-color: #CEC;
+    }
+</style>
+
+</body>
+</html>
